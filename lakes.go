@@ -1,9 +1,7 @@
 package main
 
 import (
-  "database/sql"
   "github.com/lib/pq"
-  "fmt"
   "time"
   "github.com/gin-gonic/gin"
 )
@@ -98,17 +96,11 @@ updated_at
 FROM lakes WHERE id = $1
 `
 
-func lakeShow(c *gin.Context) {
-  dbinfo := fmt.Sprintf("user=%s dbname=%s sslmode=disable",
-      "SSherman", "texasfish_in_development")
-  db, err := sql.Open("postgres", dbinfo)
-  if err != nil {
-    fmt.Println("error")
-    fmt.Println(err)
-  }
+func (e *Env) lakeShow(c *gin.Context) {
   var lake Lake
   lakeId := c.Param("id")
-  row := db.QueryRow(selectLakeQuery, lakeId)
+  row := e.db.QueryRow(selectLakeQuery, lakeId)
+
   row.Scan(
     &lake.Id,
     &lake.Name,
@@ -141,16 +133,15 @@ func lakeShow(c *gin.Context) {
 
 }
 
-func lakes(c *gin.Context) {
-  dbinfo := fmt.Sprintf("user=%s dbname=%s sslmode=disable",
-      "SSherman", "texasfish_in_development")
-  db, err := sql.Open("postgres", dbinfo)
-  if err != nil {
-    fmt.Println("error")
-    fmt.Println(err)
-  }
+func (e *Env) lakesList(c *gin.Context) {
   var lakes []Lake
-  rows, err := db.Query(selectLakesQuery)
+  rows, err := e.db.Query(selectLakesQuery)
+
+  if err != nil {
+    c.JSON(500, gin.H{"error": err})
+    return
+  }
+
   for rows.Next() {
     var lake Lake
     rows.Scan(
