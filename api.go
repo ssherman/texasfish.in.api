@@ -4,11 +4,12 @@ import (
   "github.com/gin-gonic/gin"
   "database/sql"
   "fmt"
+  "os"
 )
 
 func main() {
   dbinfo := fmt.Sprintf("user=%s dbname=%s sslmode=disable",
-      "SSherman", "texasfish_in_development")
+      os.Getenv("TEXASFISHIN_DB_USER"), os.Getenv("TEXASFISHIN_DB_NAME"))
   db, err := sql.Open("postgres", dbinfo)
   if err != nil {
     fmt.Println("error")
