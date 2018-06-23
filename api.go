@@ -8,8 +8,13 @@ import (
 )
 
 func main() {
-  dbinfo := fmt.Sprintf("user=%s dbname=%s sslmode=disable",
-      os.Getenv("TEXASFISHIN_DB_USER"), os.Getenv("TEXASFISHIN_DB_NAME"))
+  dbinfo := fmt.Sprintf("user=%s dbname=%s sslmode=%s host=%s password=%s",
+      os.Getenv("TEXASFISHIN_API_DB_USER"),
+      os.Getenv("TEXASFISHIN_API_DB_PASSWORD"),
+      os.Getenv("TEXASFISHIN_API_DB_NAME"),
+      os.Getenv("TEXASFISHIN_API_DB_SSLMODE"),
+      os.Getenv("TEXASFISHIN_API_DB_HOST")
+      )
   db, err := sql.Open("postgres", dbinfo)
   if err != nil {
     fmt.Println("error")
