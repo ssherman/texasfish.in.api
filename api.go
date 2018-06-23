@@ -13,8 +13,7 @@ func main() {
       os.Getenv("TEXASFISHIN_API_DB_PASSWORD"),
       os.Getenv("TEXASFISHIN_API_DB_NAME"),
       os.Getenv("TEXASFISHIN_API_DB_SSLMODE"),
-      os.Getenv("TEXASFISHIN_API_DB_HOST")
-      )
+      os.Getenv("TEXASFISHIN_API_DB_HOST"))
   db, err := sql.Open("postgres", dbinfo)
   if err != nil {
     fmt.Println("error")
