@@ -32,6 +32,7 @@ func main() {
   r.GET("/lakes/:id", env.lakeShow)
   r.GET("/lakes/:id/records", env.lakeRecordsList)
   r.GET("/fish_types", env.fishTypesList)
+  r.GET("/events", env.eventsList)
 
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
