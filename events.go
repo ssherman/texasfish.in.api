@@ -1,7 +1,6 @@
 package main
 
 import (
-  "github.com/lib/pq"
   "time"
   "github.com/gin-gonic/gin"
 )
@@ -69,8 +68,8 @@ func (e *Env) eventsList(c *gin.Context) {
       &event.SubmittedById,
       &event.Owner,
       &event.Approved,
-      &lake.CreatedAt,
-      &lake.UpdatedAt)
+      &event.CreatedAt,
+      &event.UpdatedAt)
     events = append(events, event)
   }
   
