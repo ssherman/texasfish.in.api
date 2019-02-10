@@ -8,11 +8,11 @@ import (
 type Event struct {
   Id     int64
   Title   string
-  Description string
   LakeId int64
-  Date time.Time
-  TimeStart time.Time
-  TimeEnd time.Time
+  LakeName string
+  Description string
+  DateTimeStart time.Time
+  DateTimeEnd time.Time
   TimeZone string
   Url string
   SubmittedById int64
@@ -23,23 +23,24 @@ type Event struct {
 }
 
 const selectEventsQuery = `
-SELECT id,
-title,
-description,
-lake_id,
-date,
-time_start,
-time_end,
+SELECT events.id as id,
+events.title as title,
+events.lake_id as lake_id,
+lakes.name as lake_name,
+events.description as description,
+datetime_start,
+datetime_end,
 time_zone,
-url,
+events.url as url,
 submitted_by_id,
 owner,
 approved,
-created_at,
-updated_at
+events.created_at as created_at,
+events.updated_at as updated_at
 FROM events
-WHERE date >= $1 AND date <= $2
-ORDER BY date, time_start
+INNER JOIN lakes on lakes.id = events.lake_id
+WHERE datetime_start >= $1 AND datetime_start <= $2
+ORDER BY datetime_start
 `
 
 func (e *Env) eventsList(c *gin.Context) {
@@ -58,11 +59,11 @@ func (e *Env) eventsList(c *gin.Context) {
     rows.Scan(
       &event.Id,
       &event.Title,
-      &event.Description,
       &event.LakeId,
-      &event.Date,
-      &event.TimeStart,
-      &event.TimeEnd,
+      &event.LakeName,
+      &event.Description,
+      &event.DateTimeStart,
+      &event.DateTimeEnd,
       &event.TimeZone,
       &event.Url,
       &event.SubmittedById,
